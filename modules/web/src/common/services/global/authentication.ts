@@ -25,6 +25,7 @@ import {CsrfTokenService} from './csrftoken';
 import {KdStateService} from './state';
 import isEmpty from 'lodash-es/isEmpty';
 import {MeService} from '@common/services/global/me';
+import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
 
 @Injectable()
 export class AuthService {
@@ -37,9 +38,11 @@ export class AuthService {
     private readonly csrfTokenService_: CsrfTokenService,
     private readonly stateService_: KdStateService,
     private readonly _meService: MeService,
+    private authService: MsalService,
     @Inject(CONFIG_DI_TOKEN) private readonly config_: IConfig
   ) {
     this.stateService_.onBefore.subscribe(_ => this.refreshToken());
+    this.authService.instance.initialize();
   }
 
   /**
@@ -69,7 +72,14 @@ export class AuthService {
   logout(): void {
     this.removeTokenCookie();
     this._meService.reset();
+    this.authService.logoutPopup({
+      account: this.authService.instance.getActiveAccount(),
+    }).subscribe(() => {
+      this.router_.navigate(['login']);
+    });
+
     this.router_.navigate(['login']);
+    
   }
 
   /**
@@ -111,6 +121,12 @@ export class AuthService {
   private getTokenCookie(): string {
     return this.cookies_.get(this.config_.authTokenCookieName) || '';
   }
+
+
+  loginAzureAd(token: string): void{
+    this.setTokenCookie_(token);
+    // this.set(user);
+ }
 
   hasTokenCookie(): boolean {
     return !isEmpty(this.getTokenCookie());

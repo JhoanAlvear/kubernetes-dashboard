@@ -38,6 +38,10 @@ import {VerberService} from './verber';
 import {PinnerService} from './pinner';
 import {MeService} from '@common/services/global/me';
 
+import { InteractionType } from '@azure/msal-browser';
+import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
+
+
 @NgModule({
   providers: [
     AuthorizerService,
@@ -89,6 +93,12 @@ export class GlobalServicesModule {
   constructor(injector: Injector) {
     GlobalServicesModule.injector = injector;
   }
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return { 
+    interactionType: InteractionType.Redirect,
+  };
 }
 
 export function init(

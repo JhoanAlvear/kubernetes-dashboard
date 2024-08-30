@@ -35,10 +35,11 @@ limitations under the License.
         fxLayout="column"
         (ngSubmit)="login()"
       >
-        <mat-form-field
+        <!-- <mat-form-field
           fxFlex
           class="kd-login-input"
         >
+         
           <input
             matInput
             id="token"
@@ -48,8 +49,10 @@ limitations under the License.
             type="password"
             required
             (keyup)="onChange($event)"
+            
           />
-        </mat-form-field>
+        </mat-form-field> -->
+       
         <mat-error
           *ngFor="let error of errors"
           class="kd-login-input kd-error kd-error-text"
@@ -62,21 +65,23 @@ limitations under the License.
           fxFlex
           fxLayout="column"
         >
+        <mat-radio-button value="AzureAD" color="primary" checked>Azure AD</mat-radio-button>
           <div
+          
             class="kd-equivalent-block kd-muted kd-bg-card-dark"
             fxLayoutAlign=" center"
           >
+
             <mat-icon>info</mat-icon>
             <div>
-              <span i18n>You can generate token for service account with:&nbsp;</span>
-              <code>kubectl -n NAMESPACE create token SERVICE_ACCOUNT</code>
+              <span>Autenticacion con Azure Ad Para la Visualizacion del Dashboard Bancolombia&nbsp;</span>
             </div>
           </div>
 
-          <div i18n>
+          <!-- <div i18n>
             To find out more on how to configure and use bearer tokens, please refer to the
             <a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">documentation</a>.
-          </div>
+          </div> -->
         </div>
 
         <div
@@ -88,7 +93,6 @@ limitations under the License.
             color="primary"
             type="submit"
             class="kd-login-button"
-            [disabled]="hasEmptyToken()"
             i18n
           >
             Sign in
